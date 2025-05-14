@@ -11,7 +11,7 @@
 Задание размещено в папке task в файле [README.md](task/README.md)
 Файлы сайта расположены в ветке website.
 
-Ссылка на веб-сайт: [https://vonofaso.github.io/practice-2025-1/]
+Ссылка на веб-сайт: https://vonofaso.github.io/practice-2025-1/
 
 ## Вариативная часть задания
 
