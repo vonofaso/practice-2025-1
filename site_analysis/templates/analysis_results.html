@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор безопасности сайтов | Проектная практика</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="static/mospolytech-logo.png" alt="Логотип Мосполитеха">
+            <h1>Проектная практика</h1>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="/">Анализатор безопасности сайтов</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Результаты проверки безопасности</h1>
+            <p><strong>Проверяемый URL:</strong> {{ url }}</p>
+            <p><strong>Домен:</strong> {{ domain }}</p>
+            
+            <div class="result-section">
+                <h2>HTTPS поддержка</h2>
+                {% if https_result %}
+                    <p class="positive">✅ Сайт поддерживает HTTPS</p>
+                {% else %}
+                    <p class="negative">❌ Сайт не поддерживает HTTPS (использует незащищенное соединение)</p>
+                {% endif %}
+            </div>
+            
+            <div class="result-section">
+                <h2>Открытые директории</h2>
+                {% if open_dirs %}
+                    <p class="negative">Обнаружены потенциально открытые директории:</p>
+                    <ul>
+                        {% for dir in open_dirs %}
+                            • {{ dir }}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="positive">✅ Открытые директории не обнаружены</p>
+                {% endif %}
+            </div>
+            
+            <div class="result-section">
+                <h2>Заголовки безопасности</h2>
+                <h3>Отсутствующие заголовки ({{ headers_result.missing|length }}):</h3>
+                {% if headers_result.missing %}
+                    <ul class="negative">
+                        {% for header in headers_result.missing %}
+                            • {{ header }}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="positive">✅ Все важные заголовки безопасности присутствуют</p>
+                {% endif %}
+                
+                <h3>Присутствующие заголовки:</h3>
+                {% if headers_result.present %}
+                    <table>
+                        <tr>
+                            <th>Заголовок</th>
+                            <th>Значение</th>
+                        </tr>
+                        {% for header, value in headers_result.present.items() %}
+                        <tr>
+                            <td>{{ header }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p>Нет информации о заголовках</p>
+                {% endif %}
+            </div>
+            
+            <div class="danger-level" style="background-color: {{ danger_result.color }}20; border-left: 5px solid {{ danger_result.color }};">
+                <h2>Уровень опасности: {{ danger_result.level }}</h2>
+                <p><strong>Оценка безопасности:</strong> {{ danger_result.score }}/100</p>
+                <div style="white-space: pre-line; background: white; padding: 10px; border-radius: 5px; margin-top: 10px;">{{ danger_result.explanation }}
+                </div>
+            </div>
+            <a href="/" class="back-btn"><strong>Проверить другой сайт</strong></a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Проектная деятельность. Московский Политехнический Университет</p>
+    </footer>
+</body>
+</html>
